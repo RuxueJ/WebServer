@@ -70,4 +70,8 @@ public class TestOutputStream extends OutputStream {
       return Arrays.copyOfRange(result, bodyPointer, result.length - 1);
     }
   }
+
+  public byte[] getResponseHead() {
+    return null;
+  }
 }
