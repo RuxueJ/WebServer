@@ -30,7 +30,6 @@ public class Resource implements IResource {
       this.mimeTypes = mimeTypes;
   }
 
-
   @Override
   public boolean exists() {
     return Files.exists(getPath());
