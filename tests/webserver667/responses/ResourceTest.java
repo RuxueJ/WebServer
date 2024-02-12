@@ -116,4 +116,10 @@ public class ResourceTest {
 
     assertFalse(resource.isScript());
   }
+
+  @Test
+  public void testMimeType() {
+    IResource resource = new Resource("/doesnt/matter/index.html", null, null, getMimeTypes());
+    assertEquals(getMimeTypes().toString(), resource.getMimeType());
+  }
 }

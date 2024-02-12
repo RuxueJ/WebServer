@@ -23,5 +23,5 @@ public interface IResource {
 
   public byte[] getFileBytes() throws IOException;
 
-  public long lastModified();
+  public long lastModified() throws IOException;
 }

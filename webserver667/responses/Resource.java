@@ -1,60 +1,88 @@
 package webserver667.responses;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
 
 import startup.configuration.MimeTypes;
 import webserver667.requests.HttpRequest;
 import webserver667.responses.authentication.UserAuthenticator;
+import webserver667.responses.authentication.UserPasswordAuthenticator;
+import webserver667.utils.URIUtil;
 
 public class Resource implements IResource {
-  public Resource(String uri, String queryString, String documentRoot, MimeTypes mimeTypes) {
 
+  private String URI;
+  private String queryString;
+  private String documentRoot;
+  private MimeTypes mimeTypes;
+
+
+  public Resource(String uri, String queryString, String documentRoot, MimeTypes mimeTypes) {
+      this.URI = URIUtil.removeQueryStringFromURI(uri);
+      this.queryString = queryString;
+      this.documentRoot = documentRoot;
+      this.mimeTypes = mimeTypes;
   }
+
 
   @Override
   public boolean exists() {
-    throw new UnsupportedOperationException("Unimplemented method 'exists'");
+    return Files.exists(getPath());
   }
 
   @Override
   public Path getPath() {
-    throw new UnsupportedOperationException("Unimplemented method 'getPath'");
+    return Paths.get(this.documentRoot, this.URI);
   }
 
   @Override
   public boolean isProtected() {
-    throw new UnsupportedOperationException("Unimplemented method 'isProtected'");
+    Path parent = getPath().getParent();
+    return Files.exists(Paths.get(String.valueOf(parent), ".passwords"));
   }
 
   @Override
   public boolean isScript() {
-    throw new UnsupportedOperationException("Unimplemented method 'isScript'");
+    Path toCheck = getPath().getParent();
+    String pathStr = toCheck.toString();
+    boolean containScript = false;
+    for (String s: pathStr.split("/")) {
+      if ("scripts".equals(s)) {
+        containScript = true;
+        break;
+      }
+    }
+    return containScript;
   }
 
   @Override
   public UserAuthenticator getUserAuthenticator(HttpRequest request) {
-    throw new UnsupportedOperationException("Unimplemented method 'getUserAuthenticator'");
+    return new UserPasswordAuthenticator(request, this);
   }
 
   @Override
   public String getMimeType() {
-    throw new UnsupportedOperationException("Unimplemented method 'getMimeType'");
+    // TODO: need fix
+    return mimeTypes.toString();
   }
 
   @Override
   public long getFileSize() throws IOException {
-    throw new UnsupportedOperationException("Unimplemented method 'getFileSize'");
+    return Files.size(getPath());
   }
 
   @Override
   public byte[] getFileBytes() throws IOException {
-    throw new UnsupportedOperationException("Unimplemented method 'getFileBytes'");
+    return Files.readAllBytes(getPath());
   }
 
   @Override
-  public long lastModified() {
-    throw new UnsupportedOperationException("Unimplemented method 'lastModified'");
+  public long lastModified() throws IOException {
+    FileTime lastModifiedTime = Files.getLastModifiedTime(getPath());
+    return lastModifiedTime.toMillis();
   }
 
 }
