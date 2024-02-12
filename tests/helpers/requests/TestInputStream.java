@@ -17,6 +17,7 @@ public class TestInputStream extends InputStream {
    * @param testContent The content that will be read from the stream
    */
   public TestInputStream(byte[] testContent) {
+
     this.testContent = testContent;
   }
 

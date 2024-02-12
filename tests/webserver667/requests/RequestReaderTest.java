@@ -77,6 +77,8 @@ public class RequestReaderTest {
     RequestReader reader = new RequestReader(new TestInputStream("GET /index.html HTTP/1.1\r\n\r\n".getBytes()));
     HttpRequest request = reader.getRequest();
 
+
+
     assertEquals("HTTP/1.1", request.getVersion());
   }
 

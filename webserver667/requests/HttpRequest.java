@@ -7,12 +7,33 @@ import java.util.Map;
 public class HttpRequest {
   private String uri;
   private HttpMethods method;
-  private String queryString;
-  private String version;
+  private String queryString ;
+  private String version ;
   private Map<String,String> header;
-  private byte[] body;
+
+  private byte[] body ;
 
 
+
+
+  public HttpRequest(){
+    this.uri = "";
+    this.method = null;
+    this.queryString = "";
+    this.version = "";
+    this.header = new HashMap<>();
+    this.body = new byte[0];
+
+  }
+
+  public HttpRequest(String uri, HttpMethods method, String queryString, String version, Map<String, String> header, byte[] body) {
+    this.uri = uri;
+    this.method = method;
+    this.queryString = queryString;
+    this.version = version;
+    this.header = header;
+    this.body = body;
+  }
 
   public HttpMethods getHttpMethod() {
 
@@ -25,27 +46,25 @@ public class HttpRequest {
   }
 
   public String getUri() {
-
-    if (this.uri != null){
+     if (this.uri.length() == 0){
+       return null;
+     }
       int index = this.uri.indexOf("?");
       if (index != -1){
         return uri.substring(0,index);
       }else{
         return this.uri;
       }
-    }else{
-      return null;
-    }
+
   }
 
   public void setUri(String uri) {
     this.uri = uri;
 
-
   }
 
   public String getQueryString() {
-    if (this.uri == null){
+    if (this.uri.length() == 0){
       return null;
     }
     int index = this.uri.indexOf("?");
@@ -63,7 +82,6 @@ public class HttpRequest {
   }
 
   public String getVersion() {
-
     return this.version;
   }
 
@@ -73,14 +91,10 @@ public class HttpRequest {
   }
 
   public String getHeader(String expectedHeaderName) {
-
     return this.header.get(expectedHeaderName).strip();
   }
 
   public void addHeader(String headerLine) {
-    if (this.header == null){
-      this.header = new HashMap<>();
-    }
     String key = headerLine.split(":")[0];
     String value = headerLine.split(":")[1];
     this.header.put(key,value);
@@ -88,26 +102,19 @@ public class HttpRequest {
   }
 
   public int getContentLength() {
-    if (this.header == null){
-      return 0;
-    }
-
-
     return Integer.parseInt(this.header.getOrDefault("Content-Length","0").strip());
   }
 
   public byte[] getBody() {
-    return hasBody() ? this.body : new byte[0];
+    return this.body;
   }
 
   public void setBody(byte[] body) {
     this.body = body;
-
   }
 
   public boolean hasBody() {
-
-    return this.body != null && this.body.length > 0;
+    return this.body.length > 0;
   }
 
 
