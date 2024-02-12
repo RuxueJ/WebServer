@@ -41,7 +41,7 @@ public class TestProviders {
         Arguments.of("a=b&c=d", new TestInputStream("GET /index.html?a=b&c=d HTTP/1.1\r\n\r\n".getBytes())),
         Arguments.of("this=is&a=setof&key=values",
             new TestInputStream(
-                "GET /blarg/saxifrage/some-filename_etc.png?this=is&a=setof&key=values HTTP/1.1\r\n\r\n".getBytes())));
+                "GET /blarg/saxifrage/some-filename_etc.png?this=is&a=setof&key=values HTTP/1.1\r\n\r\n{\"id\"=1}".getBytes())));
   }
 
   public static Stream<Arguments> getHeaders() {

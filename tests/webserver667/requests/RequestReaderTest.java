@@ -42,7 +42,7 @@ public class RequestReaderTest {
 
   @ParameterizedTest
   @MethodSource("tests.helpers.requests.TestProviders#provideInvalidHttpMethods")
-  public void testInvalidHttpMethods(InputStream input) {
+  public void testInvalidHttpMethods(InputStream input) throws MethodNotAllowedException {
     RequestReader reader = new RequestReader(input);
 
     assertThrows(
