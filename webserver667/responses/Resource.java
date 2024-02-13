@@ -20,6 +20,9 @@ public class Resource implements IResource {
   private MimeTypes mimeTypes;
 
 
+  public Resource() {
+    super();
+  }
   public Resource(String uri, String queryString, String documentRoot, MimeTypes mimeTypes) {
       this.URI = URIUtil.removeQueryStringFromURI(uri);
       this.queryString = queryString;

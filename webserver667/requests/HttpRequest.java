@@ -1,5 +1,7 @@
 package webserver667.requests;
 
+import startup.configuration.MimeTypes;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +11,7 @@ public class HttpRequest {
     private String queryString;
     private String version;
     private final Map<String, String> header;
+    private MimeTypes mimeType;
 
     private byte[] body;
 
@@ -20,15 +23,17 @@ public class HttpRequest {
         this.version = "";
         this.header = new HashMap<>();
         this.body = new byte[0];
+        this.mimeType = null;
 
     }
 
-    public HttpRequest(String uri, HttpMethods method, String queryString, String version, Map<String, String> header, byte[] body) {
+    public HttpRequest(String uri, HttpMethods method, String queryString, String version, Map<String, String> header, MimeTypes mimeType, byte[] body) {
         this.uri = uri;
         this.method = method;
         this.queryString = queryString;
         this.version = version;
         this.header = header;
+        this.mimeType = mimeType;
         this.body = body;
     }
 
@@ -116,4 +121,11 @@ public class HttpRequest {
     }
 
 
+    public MimeTypes getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(MimeTypes mimeType) {
+        this.mimeType = mimeType;
+    }
 }
