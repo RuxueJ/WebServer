@@ -17,7 +17,7 @@ public class NotFoundResponseWriter extends ResponseWriter {
 
     try {
     // Write the HTTP status line
-    String statusLine = "HTTP/1.1 404 Not Found\n";
+    String statusLine = "HTTP/1.1 404 Not Found\r\n";
     out.write(statusLine.getBytes());
 
 

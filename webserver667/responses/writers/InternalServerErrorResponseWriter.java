@@ -1,5 +1,6 @@
 package webserver667.responses.writers;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import webserver667.requests.HttpRequest;
 
@@ -13,7 +14,20 @@ public class InternalServerErrorResponseWriter extends ResponseWriter {
 
   @Override
   public void write() {
-    throw new UnsupportedOperationException("Unimplemented method 'write'");
-  }
+
+    try {
+      // Write the HTTP status line
+      String statusLine = "HTTP/1.1 500 Internal Server Error\r\n";
+      out.write(statusLine.getBytes());
+
+      // Write a blank line to separate headers from the body
+      out.write("\r\n".getBytes());
+
+      // Flush the output stream
+      out.flush();
+    } catch (IOException e) {
+      // Handle IOException if necessary
+      e.printStackTrace();
+    }}
 
 }

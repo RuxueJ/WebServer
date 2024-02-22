@@ -21,16 +21,16 @@ public class BadRequestResponseWriter extends ResponseWriter {
       out.write(statusLine.getBytes());
 
       // Write the Content-Length header
-//      String responseBody = "400 Bad Request - The request could not be understood by the server due to malformed syntax.";
-//      String contentLengthHeader = "Content-Length: " + responseBody.length() + "\r\n";
-//      out.write(contentLengthHeader.getBytes());
+      String responseBody = "400 Bad Request - The request could not be understood by the server due to malformed syntax.";
+      String contentLengthHeader = "Content-Length: " + responseBody.length() + "\r\n";
+      out.write(contentLengthHeader.getBytes());
 
       // Write a blank line to separate headers from the body
       out.write("\r\n".getBytes());
 
       // Write the response body
 
-//      out.write(responseBody.getBytes());
+      out.write(responseBody.getBytes());
 
       // Flush the output stream
       out.flush();
