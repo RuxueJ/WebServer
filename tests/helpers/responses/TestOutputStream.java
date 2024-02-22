@@ -36,6 +36,7 @@ public class TestOutputStream extends OutputStream {
       this.crlfCounter = 0;
     }
 
+    // ensure that the bodyPointer is set only once
     if (this.crlfCounter == 4 && this.crlfCounter != -1) {
       this.bodyPointer = this.streamIndex;
       this.crlfCounter = -1;
@@ -67,11 +68,19 @@ public class TestOutputStream extends OutputStream {
     } else {
       byte[] result = out.toByteArray();
 
-      return Arrays.copyOfRange(result, bodyPointer, result.length - 1);
+      return Arrays.copyOfRange(result, bodyPointer, result.length );
     }
   }
 
   public byte[] getResponseHead() {
-    return null;
+
+    byte[] result = out.toByteArray();
+
+    if (bodyPointer > 0) {
+      return Arrays.copyOfRange(result, 0, bodyPointer - 1);
+    } else {
+      // If bodyPointer is not set, the entire content is considered as head
+      return result;
+    }
   }
 }
