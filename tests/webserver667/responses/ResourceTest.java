@@ -100,6 +100,7 @@ public class ResourceTest {
   @Test
   public void testIsScriptWhenInScriptDirectory() throws IOException {
     Path resourcePath = Paths.get("doesnt", "scripts");
+    System.out.println(resourcePath);
     Path documentRoot = createDocumentRoot(resourcePath);
 
     IResource resource = new Resource("/doesnt/scripts/index.html", null, documentRoot.toString(), getMimeTypes());

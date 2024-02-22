@@ -52,7 +52,8 @@ public class Resource implements IResource {
     Path toCheck = getPath().getParent();
     String pathStr = toCheck.toString();
     boolean containScript = false;
-    for (String s: pathStr.split("/")) {
+
+    for(String s : pathStr.split("-|\\\\")){
       if ("scripts".equals(s)) {
         containScript = true;
         break;

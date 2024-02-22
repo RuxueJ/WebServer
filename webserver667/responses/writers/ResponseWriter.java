@@ -1,5 +1,6 @@
 package webserver667.responses.writers;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 import webserver667.exceptions.responses.ServerErrorException;
@@ -8,14 +9,14 @@ import webserver667.responses.IResource;
 
 public abstract class ResponseWriter {
   protected IResource resource;
-  protected OutputStream outputStream;
+  protected OutputStream out;
   protected HttpRequest request;
 
   public ResponseWriter(OutputStream out, IResource resource, HttpRequest request) {
-    this.outputStream = out;
+    this.out = out;
     this.resource = resource;
     this.request = request;
   }
 
-  public abstract void write() throws ServerErrorException;
+  public abstract void write() throws ServerErrorException, IOException;
 }
