@@ -73,14 +73,12 @@ public class TestOutputStream extends OutputStream {
   }
 
   public byte[] getResponseHead() {
-
-    byte[] result = out.toByteArray();
-
-    if (bodyPointer > 0) {
-      return Arrays.copyOfRange(result, 0, bodyPointer - 1);
+    if (this.bodyPointer == 0) {
+      return new byte[0];
     } else {
-      // If bodyPointer is not set, the entire content is considered as head
-      return result;
+      byte[] result = out.toByteArray();
+
+      return Arrays.copyOfRange(result, 0, bodyPointer - 1);
     }
   }
 }
