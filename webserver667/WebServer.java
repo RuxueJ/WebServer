@@ -73,7 +73,7 @@ public class WebServer implements I667Server {
         }
     }
 
-    @Override
-    public void stop() {
-    }
+  @Override
+  public void stop() {
+  }
 }
