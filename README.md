@@ -3,8 +3,8 @@
 # Web Server Documentation
 
 Group: As defined by Canvas
-Author1: First group member's full name here (please keep the Author1: heading for my grading script)
-Author2: Second group member's full name here (please keep the Author2: heading for my grading script)
+Author1: Xu Gu  (guxu11)
+Author2: Ruxue Jin (RuxueJ)
 
 ## Results and Conclusions
 
