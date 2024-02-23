@@ -98,7 +98,7 @@ public class HttpRequest {
 
     public void addHeader(String headerLine) {
         String key = headerLine.split(":")[0];
-        String value = headerLine.split(":")[1];
+        String value = headerLine.replace(key+":", "");
         this.header.put(key, value);
 
     }

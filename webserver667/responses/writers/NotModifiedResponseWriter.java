@@ -20,6 +20,7 @@ public class NotModifiedResponseWriter extends ResponseWriter {
       String statusLine = "HTTP/1.1 304 Not Modified\r\n";
       out.write(statusLine.getBytes());
 
+
       // Write a blank line to separate headers from the body
       out.write("\r\n".getBytes());
 
