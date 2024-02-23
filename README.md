@@ -2,8 +2,10 @@
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-7f7980b617ed060a017424585567c406b6ee15c891e84e1186181d67ecf80aa0.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=13998522)
 # Web Server Documentation
 
-Group: As defined by Canvas
+Group: Team CC
+
 Author1: Xu Gu  (guxu11)
+
 Author2: Ruxue Jin (RuxueJ)
 
 ## Results and Conclusions
