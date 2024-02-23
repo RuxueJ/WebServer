@@ -31,7 +31,8 @@ public class PutProcessor implements Processor{
         if (resource.exists()) {
             responseWriter = new CreatedResponseWriter(out, resource, request);
         } else {
-            responseWriter = new NotFoundResponseWriter(out, resource, request);
+//            responseWriter = new NotFoundResponseWriter(out, resource, request);
+            responseWriter = new CreatedResponseWriter(out, resource, request);
         }
         return responseWriter;
     }

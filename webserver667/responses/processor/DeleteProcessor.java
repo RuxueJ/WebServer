@@ -28,11 +28,8 @@ public class DeleteProcessor implements Processor{
             } catch (IOException e) {
                 System.out.println("Failed to delete resource");
             }
-            if (resource.exists()) {
-                responseWriter = new NotFoundResponseWriter(out, resource, request);
-            } else {
-                responseWriter = new NoContentResponseWriter(out, resource, request);
-            }
+            responseWriter = new NoContentResponseWriter(out, resource, request);
+
         } else {
             responseWriter = new NotFoundResponseWriter(out, resource, request);
         }

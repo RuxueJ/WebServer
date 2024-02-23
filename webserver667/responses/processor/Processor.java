@@ -4,6 +4,7 @@ import webserver667.requests.HttpRequest;
 import webserver667.responses.IResource;
 import webserver667.responses.writers.ResponseWriter;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -13,5 +14,5 @@ import java.io.OutputStream;
 public interface Processor {
 
 
-    public  ResponseWriter process(OutputStream out, IResource resource, HttpRequest request);
+    public  ResponseWriter process(OutputStream out, IResource resource, HttpRequest request) throws IOException;
 }
