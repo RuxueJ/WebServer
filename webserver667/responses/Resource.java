@@ -52,7 +52,7 @@ public class Resource implements IResource {
     String pathStr = toCheck.toString();
     boolean containScript = false;
 
-    for(String s : pathStr.split("-|\\\\")){
+    for(String s : pathStr.split(System.getProperty("file.separator"))){
       if ("scripts".equals(s)) {
         containScript = true;
         break;

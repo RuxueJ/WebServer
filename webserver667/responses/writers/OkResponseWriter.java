@@ -23,11 +23,11 @@ public class OkResponseWriter extends ResponseWriter {
     String contentTypeLine = "Content-Type: text/html\r\n";
     String contentLengthLine = String.format("Content-Length: %d\r\n", contentLength);
     try {
-      outputStream.write(statusLine.getBytes());
-      outputStream.write(contentTypeLine.getBytes());
-      outputStream.write(contentLengthLine.getBytes());
-      outputStream.write("\r\n".getBytes());
-      outputStream.write(resource.getFileBytes());
+      out.write(statusLine.getBytes());
+      out.write(contentTypeLine.getBytes());
+      out.write(contentLengthLine.getBytes());
+      out.write("\r\n".getBytes());
+      out.write(resource.getFileBytes());
     } catch (IOException e) {
       System.out.println("write failed");
     }
