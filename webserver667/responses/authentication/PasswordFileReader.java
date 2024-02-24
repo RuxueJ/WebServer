@@ -30,7 +30,10 @@ public class PasswordFileReader {
     // Username and password from the client
     String[] parts = credentials.split(":");
     // SHA-1 encrypted password
-    return users.get(parts[0]) == encryptClearPassword(parts[1]);
+    if (parts.length != 2 || parts[0] == null) {
+      return false;
+    }
+    return users.get(parts[0]).equals(encryptClearPassword(parts[1]));
   }
 
   private String encryptClearPassword(String password) {

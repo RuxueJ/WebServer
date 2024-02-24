@@ -2,6 +2,10 @@ package webserver667.utils;
 
 import org.junit.platform.commons.util.StringUtils;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * @author 7991uxug@gmail.com
  * @date 2/11/24 7:50 PM
@@ -27,5 +31,10 @@ public class URIUtil {
         }
         int index = uri.indexOf("?");
         return index == -1 ? uri : uri.substring(0, index);
+    }
+
+    public static Path getPasswordPath(Path resourcePath) {
+        Path parent = resourcePath.getParent();
+        return Paths.get(String.valueOf(parent), ".passwords");
     }
 }

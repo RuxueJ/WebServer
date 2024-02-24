@@ -44,8 +44,7 @@ public class Resource implements IResource {
 
   @Override
   public boolean isProtected() {
-    Path parent = getPath().getParent();
-    return Files.exists(Paths.get(String.valueOf(parent), ".passwords"));
+    return Files.exists(URIUtil.getPasswordPath(getPath()));
   }
 
   @Override

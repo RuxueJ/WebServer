@@ -132,11 +132,10 @@ public class TestResource implements IResource {
 
   @Override
   public long lastModified() {
-//    if (this.shouldReportModifiedTestValue) {
-//      return this.pathTestValue.toFile().lastModified();
-//    } else {
-//      return -999;
-//    }
-    return this.pathTestValue.toFile().lastModified();
+    if (this.shouldReportModifiedTestValue) {
+      return this.pathTestValue.toFile().lastModified();
+    } else {
+      return 0;
+    }
   }
 }

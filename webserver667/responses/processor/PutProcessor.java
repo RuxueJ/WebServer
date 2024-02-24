@@ -2,9 +2,8 @@ package webserver667.responses.processor;
 
 import webserver667.requests.HttpRequest;
 import webserver667.responses.IResource;
-import webserver667.responses.writers.CreatedResponseWriter;
-import webserver667.responses.writers.NotFoundResponseWriter;
-import webserver667.responses.writers.ResponseWriter;
+import webserver667.responses.authentication.UserPasswordAuthenticator;
+import webserver667.responses.writers.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,25 +14,21 @@ import java.nio.file.Path;
  * @author 7991uxug@gmail.com
  * @date 2/12/24 1:00 PM
  */
-public class PutProcessor implements Processor{
+public class PutProcessor extends Processor{
     @Override
-    public ResponseWriter process(OutputStream out, IResource resource, HttpRequest request) {
-        ResponseWriter responseWriter;
+    public ResponseWriter process(OutputStream out, IResource resource, HttpRequest request) throws IOException {
+        ResponseWriter writer = super.process(out, resource, request);
+        if (writer != null) {
+            return writer;
+        }
 
         // create resource
         Path path = resource.getPath();
-        try {
-            Files.createFile(path);
-        } catch (IOException e) {
-            System.out.println("Failed to create resource");
-        }
+        Files.createFile(path);
 
-        if (resource.exists()) {
-            responseWriter = new CreatedResponseWriter(out, resource, request);
-        } else {
-//            responseWriter = new NotFoundResponseWriter(out, resource, request);
-            responseWriter = new CreatedResponseWriter(out, resource, request);
+        if (!resource.exists()) {
+            return new InternalServerErrorResponseWriter(out, resource, request);
         }
-        return responseWriter;
+        return new CreatedResponseWriter(out, resource, request);
     }
 }

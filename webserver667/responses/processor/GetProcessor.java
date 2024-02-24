@@ -1,11 +1,11 @@
 package webserver667.responses.processor;
 
+import webserver667.constant.Constants;
 import webserver667.requests.HttpRequest;
 import webserver667.responses.IResource;
-import webserver667.responses.writers.NotFoundResponseWriter;
-import webserver667.responses.writers.NotModifiedResponseWriter;
-import webserver667.responses.writers.OkResponseWriter;
-import webserver667.responses.writers.ResponseWriter;
+import webserver667.responses.authentication.UserPasswordAuthenticator;
+import webserver667.responses.writers.*;
+import webserver667.utils.TimeStampUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,55 +21,37 @@ import java.util.HashMap;
  * @author 7991uxug@gmail.com
  * @date 2/12/24 11:56 AM
  */
-public class GetProcessor implements Processor{
+public class GetProcessor extends Processor{
 
     @Override
     public ResponseWriter process(OutputStream out, IResource resource, HttpRequest request) throws IOException{
-        ResponseWriter responseWriter;
-
-        String ifModifiedSince = request.getHeader("If-Modified-Since").replace(" GMT","");
-        long lastModified = resource.lastModified();
-
-
-        if(ifModifiedSince == null){
-            if (resource.exists()) {
-                responseWriter = new OkResponseWriter(out, resource, request);
-            } else {
-                responseWriter = new NotFoundResponseWriter(out, resource, request);
-            }
-        }else{
-            if (resource.exists()) {
-                long timestamp = 100;
-                try{  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    LocalDateTime dateTime = LocalDateTime.parse(ifModifiedSince, formatter);
-                    timestamp = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-                } catch (Exception e){
-                    e.printStackTrace();
-
-                }
-
-                System.out.println("ifModifiedSince" + timestamp);
-                System.out.println("lastModified" + lastModified);
-
-                if(timestamp >= lastModified){
-                    responseWriter = new NotModifiedResponseWriter(out, resource, request);
-                }else{
-                    responseWriter = new OkResponseWriter(out, resource, request);
-                }
-
-
-            } else {
-                responseWriter = new NotFoundResponseWriter(out, resource, request);
-            }
-
-
-
+        ResponseWriter writer = super.process(out, resource, request);
+        if (writer != null) {
+            return writer;
         }
 
+        String ifModifiedSince = request.getHeader(Constants.IF_MODIFIED_SINCE);
+        long lastModified = resource.lastModified();
 
+        // When the resource does not exist, return NotFoundResponseWriter immediately
+        if (!resource.exists()) {
+            return new NotFoundResponseWriter(out, resource, request);
+        }
 
+        // If the If-Modified-Since header is missing, or the resource has been updated (timestamp < lastModified), return OkResponseWriter
+        if (ifModifiedSince == null) {
+            return new OkResponseWriter(out, resource, request);
+        }
 
+        // Convert the If-Modified-Since header to a timestamp
+        long timestamp = TimeStampUtil.convertToTimestamp(ifModifiedSince);
 
-        return responseWriter;
+        // If the resource has not been modified, return NotModifiedResponseWriter
+        if (timestamp >= lastModified) {
+            return new NotModifiedResponseWriter(out, resource, request);
+        }
+
+        // In all other cases, return OkResponseWriter
+        return new OkResponseWriter(out, resource, request);
     }
 }
