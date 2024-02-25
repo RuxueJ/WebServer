@@ -19,7 +19,7 @@ import webserver667.responses.Resource;
 
 public class ResourceTest {
   private MimeTypes getMimeTypes() {
-    return new MimeTypes("html index/html" + System.lineSeparator());
+    return new MimeTypes("text/html html" + System.lineSeparator());
   }
 
   private static Path createDocumentRoot(Path path) throws IOException {
@@ -121,6 +121,6 @@ public class ResourceTest {
   @Test
   public void testMimeType() {
     IResource resource = new Resource("/doesnt/matter/index.html", null, null, getMimeTypes());
-    assertEquals(getMimeTypes().toString(), resource.getMimeType());
+    assertEquals("text/html", resource.getMimeType());
   }
 }
