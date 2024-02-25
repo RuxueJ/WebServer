@@ -20,13 +20,9 @@ public class PostProcessor extends Processor{
         if (writer != null) {
             return writer;
         }
-        // TODO: execute script
-        ResponseWriter responseWriter;
-        if (resource.exists() && resource.isScript()) {
-            responseWriter = new ScriptResponseWriter(out, resource, request);
-        } else {
-            responseWriter = new NotFoundResponseWriter(out, resource, request);
+        if (!resource.exists()) {
+            return new NotFoundResponseWriter(out, resource, request);
         }
-        return responseWriter;
+        return new ScriptResponseWriter(out, resource, request);
     }
 }

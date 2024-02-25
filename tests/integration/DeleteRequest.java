@@ -37,6 +37,11 @@ public class DeleteRequest {
       }
     }.start();
 
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     URL url = new URI("http://localhost:9876/someDirectory/deleteMeFile.png").toURL();
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("DELETE");

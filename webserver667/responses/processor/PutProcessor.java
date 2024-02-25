@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author 7991uxug@gmail.com
@@ -24,11 +25,17 @@ public class PutProcessor extends Processor{
 
         // create resource
         Path path = resource.getPath();
-        Files.createFile(path);
-
-        if (!resource.exists()) {
-            return new InternalServerErrorResponseWriter(out, resource, request);
+        if (path.getParent() != null && !Files.exists(path.getParent())) {
+            Files.createDirectories(path.getParent());
         }
-        return new CreatedResponseWriter(out, resource, request);
+        if (!Files.exists(path)) {
+            Files.createFile(path);
+        }
+        Files.write(path, request.getBody());
+
+        if (Files.exists(path)) {
+            return new CreatedResponseWriter(out, resource, request);
+        }
+        return new InternalServerErrorResponseWriter(out, resource, request);
     }
 }

@@ -2,8 +2,11 @@ package webserver667.responses.writers;
 
 import java.io.IOException;
 import java.io.OutputStream;
+
+import webserver667.constant.Constants;
 import webserver667.requests.HttpRequest;
 
+import webserver667.responses.HttpResponseCode;
 import webserver667.responses.IResource;
 
 public class NotFoundResponseWriter extends ResponseWriter {
@@ -14,23 +17,16 @@ public class NotFoundResponseWriter extends ResponseWriter {
 
   @Override
   public void write() {
-
+    String body = String.format(Constants.BODY_NOT_FOUND, resource.getPath());
     try {
-    // Write the HTTP status line
-    String statusLine = "HTTP/1.1 404 Not Found\r\n";
-    out.write(statusLine.getBytes());
+      writePipeLine(
+              HttpResponseCode.NOT_FOUND,
+              Constants.MIMETYPE_TEXT_PLAIN,
+              body.length(),
+              body,
+              null
+      );
 
-
-
-    // Write a blank line to separate headers from the body
-    out.write("\r\n".getBytes());
-
-    // Write the response body
-    String responseBody = "400 Bad Request - The request could not be understood by the server due to malformed syntax.";
-    out.write(responseBody.getBytes());
-
-    // Flush the output stream
-    out.flush();
   } catch (
   IOException e) {
     // Handle IOException if necessary

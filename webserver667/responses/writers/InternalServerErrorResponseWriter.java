@@ -2,8 +2,11 @@ package webserver667.responses.writers;
 
 import java.io.IOException;
 import java.io.OutputStream;
+
+import webserver667.constant.Constants;
 import webserver667.requests.HttpRequest;
 
+import webserver667.responses.HttpResponseCode;
 import webserver667.responses.IResource;
 
 public class InternalServerErrorResponseWriter extends ResponseWriter {
@@ -14,17 +17,15 @@ public class InternalServerErrorResponseWriter extends ResponseWriter {
 
   @Override
   public void write() {
-
+    String body = Constants.BODY_INTERNAL_SERVER_ERROR;
     try {
-      // Write the HTTP status line
-      String statusLine = "HTTP/1.1 500 Internal Server Error\r\n";
-      out.write(statusLine.getBytes());
-
-      // Write a blank line to separate headers from the body
-      out.write("\r\n".getBytes());
-
-      // Flush the output stream
-      out.flush();
+      writePipeLine(
+              HttpResponseCode.INTERNAL_SERVER_ERROR,
+              Constants.MIMETYPE_TEXT_PLAIN,
+              body.length(),
+              body,
+              null
+      );
     } catch (IOException e) {
       // Handle IOException if necessary
       e.printStackTrace();

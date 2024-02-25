@@ -1,6 +1,12 @@
 package webserver667.responses.processor;
 
 import webserver667.requests.HttpMethods;
+import webserver667.requests.HttpRequest;
+import webserver667.responses.IResource;
+import webserver667.responses.writers.ResponseWriter;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * @author 7991uxug@gmail.com

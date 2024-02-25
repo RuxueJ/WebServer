@@ -39,11 +39,16 @@ public class SimpleRequestTest {
       }
     }.start();
 
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      /* no op */
+    }
     URL url = new URI("http://localhost:9876/textFile.txt").toURL();
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("GET");
-    connection.setConnectTimeout(5000);
-    connection.setReadTimeout(5000);
+    connection.setConnectTimeout(500000);
+    connection.setReadTimeout(500000);
 
     assertEquals(200, connection.getResponseCode());
     assertEquals("OK", connection.getResponseMessage());

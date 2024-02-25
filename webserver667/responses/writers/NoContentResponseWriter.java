@@ -2,10 +2,15 @@ package webserver667.responses.writers;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import webserver667.constant.Constants;
 import webserver667.requests.HttpRequest;
 
+import webserver667.responses.HttpResponseCode;
 import webserver667.responses.IResource;
-import webserver667.utils.TimeStampUtil;
+import webserver667.utils.TimestampUtil;
 
 public class NoContentResponseWriter extends ResponseWriter {
 
@@ -16,21 +21,24 @@ public class NoContentResponseWriter extends ResponseWriter {
   @Override
   public void write() {
     try {
-      // Write the HTTP status line
-      String statusLine = "HTTP/1.1 204 No Content\r\n";
-      out.write(statusLine.getBytes());
-
-      // write Last-Modified
-      out.write(String.format("Last-Modified:%s\r\n", TimeStampUtil.convertFromTimestamp(resource.lastModified())).getBytes());
-      // Write a blank line to separate headers from the body
-      out.write("\r\n".getBytes());
-
-      // Flush the output stream
-      out.flush();
+      writePipeLine(
+              HttpResponseCode.NO_CONTENT,
+              null,
+              0,
+              null,
+              null
+      );
     } catch (IOException e) {
       // Handle IOException if necessary
       e.printStackTrace();
     }
+  }
+
+  @Override
+  protected void writeCommonHeaders(String mimeType, long contentLength) throws IOException {
+    Map<String, String> commonHeaders = new HashMap<>();
+    commonHeaders.put(Constants.HEADER_DATE, TimestampUtil.getCurrentTimeRFC7321());
+    super.writeHeaders(commonHeaders);
   }
 
 }

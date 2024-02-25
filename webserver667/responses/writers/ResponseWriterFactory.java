@@ -13,8 +13,12 @@ import webserver667.responses.processor.ProcessorFactory;
 public class ResponseWriterFactory {
   public static ResponseWriter create(OutputStream out, IResource resource, HttpRequest request) throws IOException{
     HttpMethods httpMethod = request.getHttpMethod();
-    Processor processor = ProcessorFactory.createProcessor(httpMethod);
-    return processor.process(out, resource, request);
+    if (httpMethod != null) {
+      Processor processor = ProcessorFactory.createProcessor(httpMethod);
+      return processor.process(out, resource, request);
+    }
+
+    return new BadRequestResponseWriter(out, resource, request);
   }
 
 }

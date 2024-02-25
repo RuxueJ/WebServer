@@ -5,8 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import startup.configuration.MimeTypes;
 import webserver667.requests.HttpRequest;
@@ -23,8 +21,8 @@ public class Resource implements IResource {
 
 
   public Resource() {
-    super();
   }
+
   public Resource(String uri, String queryString, String documentRoot, MimeTypes mimeTypes) {
       this.URI = URIUtil.removeQueryStringFromURI(uri);
       this.queryString = queryString;
@@ -69,8 +67,12 @@ public class Resource implements IResource {
 
   @Override
   public String getMimeType() {
-    // TODO: need fix
-    return mimeTypes.toString();
+    String[] split = this.URI.split("\\.");
+    String extension = split[split.length - 1];
+    return this.mimeTypes != null
+            && this.mimeTypes.getMimeTypeByExtension(extension) != null
+            ? this.mimeTypes.getMimeTypeByExtension(extension)
+            : null;
   }
 
   @Override

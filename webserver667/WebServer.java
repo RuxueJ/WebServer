@@ -37,20 +37,17 @@ public class WebServer implements I667Server {
         try {
             serverSocket = new ServerSocket(configuration.getPort());
             Path documentRoot = configuration.getDocumentRoot();
-            while (true) {
+//            while (true) {
                 Socket socket = null;
                 try {
                     socket = serverSocket.accept();
                     RequestReader requestReader = new RequestReader(socket.getInputStream());
                     HttpRequest request = requestReader.getRequest();
                     IResource resource = new Resource(request.getUri(), request.getQueryString(), String.valueOf(documentRoot), mimeTypes);
-                    ResponseWriter responseWriter = ResponseWriterFactory.create(
-                            socket.getOutputStream(),
-                            resource,
-                            request
-                    );
+                    ResponseWriter responseWriter = ResponseWriterFactory.create(socket.getOutputStream(), resource, request);
                     responseWriter.write();
                 } catch (Exception e) {
+                    e.printStackTrace();
                 } finally {
                     if (socket != null) {
                         try {
@@ -59,8 +56,7 @@ public class WebServer implements I667Server {
                         }
                     }
                 }
-
-            }
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

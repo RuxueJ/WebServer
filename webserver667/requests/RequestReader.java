@@ -36,8 +36,9 @@ public class RequestReader {
         }
 
         // read body
+        int contentLength = httpRequest.getContentLength();
         try {
-            httpRequest.setBody(input.readAllBytes());
+            httpRequest.setBody(input.readNBytes(contentLength));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,16 +47,33 @@ public class RequestReader {
     }
 
     private String readLine() {
-        int byteRead;
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         try {
-            while ((byteRead = this.input.read()) != 10) {
-                stringBuilder.append((char) byteRead);
+            int ch;
+            while ((ch = input.read()) != -1) {
+                if (ch == '\r') {
+                    int nextChar = input.read();
+                    if (nextChar == '\n') {
+                        break;
+                    } else {
+                        sb.append((char) ch);
+                        if (nextChar != -1) {
+                            sb.append((char) nextChar);
+                        }
+                    }
+                } else if (ch == '\n') {
+                    break;
+                } else {
+                    sb.append((char) ch);
+                }
             }
         } catch (IOException e) {
+            // Log the exception or handle it as necessary
             e.printStackTrace();
+            // Return null or a specific error message depending on your error handling strategy
+            return null;
         }
-        return stringBuilder.toString().strip();
+        return sb.toString();
     }
 
     private void validate(String headLine) throws BadRequestException, MethodNotAllowedException {

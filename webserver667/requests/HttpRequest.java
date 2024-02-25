@@ -1,6 +1,8 @@
 package webserver667.requests;
 
 import startup.configuration.MimeTypes;
+import webserver667.constant.Constants;
+import webserver667.utils.URIUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,9 +20,9 @@ public class HttpRequest {
 
     public HttpRequest() {
         this.uri = "";
-        this.method = null;
+        this.method = HttpMethods.GET;
         this.queryString = "";
-        this.version = "";
+        this.version = Constants.DEFAULT_HTTP_VERSION;
         this.header = new HashMap<>();
         this.body = new byte[0];
         this.mimeType = null;
@@ -47,16 +49,7 @@ public class HttpRequest {
     }
 
     public String getUri() {
-        if (this.uri.length() == 0) {
-            return null;
-        }
-        int index = this.uri.indexOf("?");
-        if (index != -1) {
-            return uri.substring(0, index);
-        } else {
-            return this.uri;
-        }
-
+        return URIUtil.removeQueryStringFromURI(this.uri);
     }
 
     public void setUri(String uri) {
@@ -65,16 +58,7 @@ public class HttpRequest {
     }
 
     public String getQueryString() {
-        if (this.uri.length() == 0) {
-            return null;
-        }
-        int index = this.uri.indexOf("?");
-        if (index == -1) {
-            return null;
-        } else {
-            return this.uri.substring(index + 1);
-        }
-
+        return URIUtil.getQueryStringFromURI(this.uri);
     }
 
     public void setQueryString(String queryString) {
@@ -92,7 +76,7 @@ public class HttpRequest {
     }
 
     public String getHeader(String expectedHeaderName) {
-        String headerContent = this.header.get(expectedHeaderName);
+        String headerContent = this.header.getOrDefault(expectedHeaderName, null);
         return headerContent == null ? null : headerContent.strip();
     }
 
@@ -101,6 +85,10 @@ public class HttpRequest {
         String value = headerLine.replace(key+":", "");
         this.header.put(key, value);
 
+    }
+
+    public Map<String, String> getHeaders() {
+        return this.header;
     }
 
     public int getContentLength() {

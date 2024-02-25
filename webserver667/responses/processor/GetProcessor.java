@@ -3,19 +3,12 @@ package webserver667.responses.processor;
 import webserver667.constant.Constants;
 import webserver667.requests.HttpRequest;
 import webserver667.responses.IResource;
-import webserver667.responses.authentication.UserPasswordAuthenticator;
 import webserver667.responses.writers.*;
-import webserver667.utils.TimeStampUtil;
+import webserver667.utils.TimestampUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
+
 
 /**
  * @author 7991uxug@gmail.com
@@ -30,13 +23,13 @@ public class GetProcessor extends Processor{
             return writer;
         }
 
-        String ifModifiedSince = request.getHeader(Constants.IF_MODIFIED_SINCE);
-        long lastModified = resource.lastModified();
-
         // When the resource does not exist, return NotFoundResponseWriter immediately
         if (!resource.exists()) {
             return new NotFoundResponseWriter(out, resource, request);
         }
+
+        String ifModifiedSince = request.getHeader(Constants.HEADER_IF_MODIFIED_SINCE);
+        long lastModified = resource.lastModified();
 
         // If the If-Modified-Since header is missing, or the resource has been updated (timestamp < lastModified), return OkResponseWriter
         if (ifModifiedSince == null) {
@@ -44,7 +37,7 @@ public class GetProcessor extends Processor{
         }
 
         // Convert the If-Modified-Since header to a timestamp
-        long timestamp = TimeStampUtil.convertToTimestamp(ifModifiedSince);
+        long timestamp = TimestampUtil.convertToTimestamp(ifModifiedSince);
 
         // If the resource has not been modified, return NotModifiedResponseWriter
         if (timestamp >= lastModified) {

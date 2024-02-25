@@ -23,11 +23,11 @@ public class DeleteProcessor extends Processor{
         }
         // delete resource
         Path path = resource.getPath();
-        if (!resource.exists()) {
+        if (!Files.exists(path)) {
             return new NotFoundResponseWriter(out, resource, request);
         }
         Files.delete(path);
-        if (!resource.exists()) {
+        if (!Files.exists(path)) {
             return new NoContentResponseWriter(out, resource, request);
         }
 

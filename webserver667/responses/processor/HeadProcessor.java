@@ -23,6 +23,6 @@ public class HeadProcessor extends Processor{
         if (!resource.exists()) {
             return new NotFoundResponseWriter(out, resource, request);
         }
-        return new OkResponseWithoutBodyWriter(out, resource, request);
+        return new OkResponseWriter(out, resource, request);
     }
 }

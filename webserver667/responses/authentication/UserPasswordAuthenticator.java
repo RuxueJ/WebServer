@@ -21,21 +21,20 @@ public class UserPasswordAuthenticator extends UserAuthenticator {
 
   @Override
   public boolean isAuthenticated() {
-    String authorization = request.getHeader(Constants.AUTHORIZATION);
+    String authorization = request.getHeader(Constants.HEADER_AUTHORIZATION);
     Path passwordPath = URIUtil.getPasswordPath(resource.getPath());
 
     boolean userAuthorized = false;
     try {
       PasswordFileReader passwordFileReader = new PasswordFileReader(passwordPath);
       userAuthorized = passwordFileReader.isUserAuthorized(authorization.split(" ")[1]);
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (Exception e) {
     }
     return userAuthorized;
   }
 
   public int authenticateStatus() {
-    String authorizationHeader = request.getHeader(Constants.AUTHORIZATION);
+    String authorizationHeader = request.getHeader(Constants.HEADER_AUTHORIZATION);
     if (resource.isProtected() && authorizationHeader == null) {
       return 401;
     }

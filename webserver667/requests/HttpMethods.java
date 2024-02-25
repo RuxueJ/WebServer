@@ -1,5 +1,8 @@
 package webserver667.requests;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public enum HttpMethods {
   GET, HEAD, PUT, POST, DELETE;
 

@@ -19,15 +19,15 @@ public class URIUtil {
 
     public static String getQueryStringFromURI(String uri) {
         if (!isValidURI(uri)) {
-            return "";
+            return null;
         }
         int index = uri.indexOf("?");
-        return index == -1 ? "" : uri.substring(index+1);
+        return index == -1 ? null : uri.substring(index+1);
     }
 
     public static String removeQueryStringFromURI(String uri) {
         if (!isValidURI(uri)) {
-            return "";
+            return null;
         }
         int index = uri.indexOf("?");
         return index == -1 ? uri : uri.substring(0, index);
