@@ -19,6 +19,7 @@ public abstract class ResponseWriter {
   protected IResource resource;
   protected OutputStream out;
   protected HttpRequest request;
+  private HttpResponseCode responseCode;
 
   public ResponseWriter(OutputStream out, IResource resource, HttpRequest request) {
     this.out = out;
@@ -27,6 +28,10 @@ public abstract class ResponseWriter {
   }
 
   public abstract void write() throws ServerErrorException, IOException;
+
+  public int getResponseCode() {
+    return responseCode.getCode();
+  }
 
   public void writePipeLine(
           HttpResponseCode httpResponseCode,
@@ -55,8 +60,9 @@ public abstract class ResponseWriter {
     // default no-op
   }
 
-  protected void writeStatusLine(HttpResponseCode httpResponseCode) throws IOException {
-    String statusLine = String.format("%s %d %s\r\n", request.getVersion(), httpResponseCode.getCode(), httpResponseCode.getReasonPhrase());
+  protected void writeStatusLine(HttpResponseCode httpresponseCode) throws IOException {
+    this.responseCode = httpresponseCode;
+    String statusLine = String.format("%s %d %s\r\n", request.getVersion(), responseCode.getCode(), responseCode.getReasonPhrase());
     out.write(statusLine.getBytes());
   }
 

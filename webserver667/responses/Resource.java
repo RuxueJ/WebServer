@@ -77,7 +77,10 @@ public class Resource implements IResource {
 
   @Override
   public long getFileSize() throws IOException {
-    return Files.size(getPath());
+    if (this.exists()) {
+      return Files.size(getPath());
+    }
+    return 0;
   }
 
   @Override

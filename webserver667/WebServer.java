@@ -2,6 +2,7 @@ package webserver667;
 
 import startup.configuration.MimeTypes;
 import startup.configuration.ServerConfiguration;
+import webserver667.logging.Logger;
 import webserver667.requests.HttpMethods;
 import webserver667.requests.HttpRequest;
 import webserver667.requests.RequestReader;
@@ -46,6 +47,7 @@ public class WebServer implements I667Server {
                     IResource resource = new Resource(request.getUri(), request.getQueryString(), String.valueOf(documentRoot), mimeTypes);
                     ResponseWriter responseWriter = ResponseWriterFactory.create(socket.getOutputStream(), resource, request);
                     responseWriter.write();
+                    System.out.println(Logger.getLogString(socket.getInetAddress().getHostAddress(), request, resource, responseWriter.getResponseCode(), (int) resource.getFileSize()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
