@@ -3,12 +3,13 @@ package webserver667.responses.writers;
 import java.io.*;
 import java.util.Map;
 
-import org.junit.platform.commons.util.StringUtils;
 import webserver667.constant.Constants;
+import webserver667.exceptions.responses.ServerErrorException;
 import webserver667.requests.HttpRequest;
 
 import webserver667.responses.HttpResponseCode;
 import webserver667.responses.IResource;
+import webserver667.utils.StringUtils;
 
 public class ScriptResponseWriter extends ResponseWriter {
 
@@ -17,26 +18,20 @@ public class ScriptResponseWriter extends ResponseWriter {
   }
 
   @Override
-  public void write() {
+  public void write() throws ServerErrorException, IOException {
     InputStream inputStream = null;
     try {
       inputStream = executeScript();
-    } catch (IOException | InterruptedException e) {
-      try {
-        writeStatusLine(HttpResponseCode.INTERNAL_SERVER_ERROR);
-        return;
-      } catch (IOException e2) {
-      }
-    }
-    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-    try {
+      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
       writeStatusLine(HttpResponseCode.OK);
       String line;
       while ((line = bufferedReader.readLine()) != null) {
         out.write((line + "\r\n").getBytes());
         out.flush();
       }
-    } catch (IOException e) {
+    }
+    catch (Exception e) {
+      throw new ServerErrorException(e);
     }
   }
 
@@ -46,7 +41,7 @@ public class ScriptResponseWriter extends ResponseWriter {
     Map<String, String> env = processBuilder.environment();
     request.getHeaders().forEach((k, v) -> env.put(Constants.ENV_PREFIX + k, v));
     String queryString = request.getQueryString();
-    if (StringUtils.isNotBlank(queryString)) {
+    if (StringUtils.isNotEmpty(queryString)) {
       env.put(Constants.ENV_QUERY_STRING, queryString);
     }
     Process process = processBuilder.start();

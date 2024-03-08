@@ -47,8 +47,8 @@ public class SimpleRequestTest {
     URL url = new URI("http://localhost:9876/textFile.txt").toURL();
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("GET");
-    connection.setConnectTimeout(500000);
-    connection.setReadTimeout(500000);
+    connection.setConnectTimeout(5000);
+    connection.setReadTimeout(5000);
 
     assertEquals(200, connection.getResponseCode());
     assertEquals("OK", connection.getResponseMessage());

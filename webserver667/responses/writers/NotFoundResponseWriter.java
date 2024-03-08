@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import webserver667.constant.Constants;
+import webserver667.exceptions.responses.ServerErrorException;
 import webserver667.requests.HttpRequest;
 
 import webserver667.responses.HttpResponseCode;
@@ -16,21 +17,19 @@ public class NotFoundResponseWriter extends ResponseWriter {
   }
 
   @Override
-  public void write() {
-    String body = String.format(Constants.BODY_NOT_FOUND, resource.getPath());
+  public void write() throws ServerErrorException, IOException{
+    byte[] body = String.format(Constants.BODY_NOT_FOUND, resource.getPath()).getBytes();
     try {
       writePipeLine(
               HttpResponseCode.NOT_FOUND,
               Constants.MIMETYPE_TEXT_PLAIN,
-              body.length(),
+              body.length,
               body,
               null
       );
 
-  } catch (
-  IOException e) {
-    // Handle IOException if necessary
-    e.printStackTrace();
+  } catch (Exception e) {
+    throw new ServerErrorException(e);
   }
 }
 }

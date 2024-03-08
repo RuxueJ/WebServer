@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import webserver667.constant.Constants;
+import webserver667.exceptions.responses.ServerErrorException;
 import webserver667.requests.HttpRequest;
 
 import webserver667.responses.HttpResponseCode;
@@ -20,25 +21,24 @@ public class MethodNotAllowedResponseWriter extends ResponseWriter {
   }
 
   @Override
-  public void write() {
+  public void write() throws ServerErrorException, IOException{
     Map<String, String> otherHeaders = new HashMap<>();
     otherHeaders.put(Constants.HEADER_ALLOW, FormSubmitEvent.MethodType.GET.toString());
-    String body = String.format(
+    byte[] body = String.format(
             Constants.BODY_METHOD_NOT_ALLOWED,
             request.getHttpMethod().toString(),
             request.getUri()
-    );
+    ).getBytes();
     try {
       writePipeLine(
               HttpResponseCode.METHOD_NOT_ALLOWED,
               Constants.MIMETYPE_TEXT_PLAIN,
-              body.length(),
+              body.length,
               body,
               otherHeaders
       );
-    } catch (IOException e) {
-      // Handle IOException if necessary
-      e.printStackTrace();
+    } catch (Exception e) {
+      throw new ServerErrorException(e);
     }
   }
 

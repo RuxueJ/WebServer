@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import webserver667.constant.Constants;
+import webserver667.exceptions.responses.ServerErrorException;
 import webserver667.requests.HttpRequest;
 
 import webserver667.responses.HttpResponseCode;
@@ -18,21 +19,20 @@ public class UnauthorizedResponseWriter extends ResponseWriter {
   }
 
   @Override
-  public void write() {
+  public void write() throws ServerErrorException, IOException {
     Map<String, String> otherHeaders = new HashMap<>();
     otherHeaders.put(Constants.HEADER_WWW_AUTHENTICATE, Constants.HEADER_VALUE_WWW_AUTHENTICATE);
-    String body = Constants.BODY_UNAUTHORIZED;
+    byte[] body = Constants.BODY_UNAUTHORIZED.getBytes();
     try {
       writePipeLine(
               HttpResponseCode.UNAUTHORIZED,
               Constants.MIMETYPE_TEXT_PLAIN,
-              body.length(),
+              body.length,
               body,
               otherHeaders
       );
-    } catch (IOException e) {
-      // Handle IOException if necessary
-      e.printStackTrace();
+    } catch (Exception e) {
+      throw new ServerErrorException(e);
     }
   }
 

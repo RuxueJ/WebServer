@@ -1,8 +1,5 @@
 package webserver667.utils;
 
-import org.junit.platform.commons.util.StringUtils;
-
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -12,7 +9,7 @@ import java.nio.file.Paths;
  */
 public class URIUtil {
     public static boolean isValidURI(String uri) {
-        if (StringUtils.isBlank(uri)) return false;
+        if (StringUtils.isEmpty(uri)) return false;
         // TODO: other situation
         return true;
     }

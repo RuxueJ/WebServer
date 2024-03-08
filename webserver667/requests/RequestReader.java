@@ -1,8 +1,8 @@
 package webserver667.requests;
 
-import org.junit.platform.commons.util.StringUtils;
 import webserver667.exceptions.responses.BadRequestException;
 import webserver667.exceptions.responses.MethodNotAllowedException;
+import webserver667.utils.StringUtils;
 import webserver667.utils.URIUtil;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class RequestReader {
 
         // read headers
         line = readLine();
-        while (StringUtils.isNotBlank(line)) {
+        while (StringUtils.isNotEmpty(line)) {
             httpRequest.addHeader(line);
             line = readLine();
         }
@@ -71,7 +71,7 @@ public class RequestReader {
             // Log the exception or handle it as necessary
             e.printStackTrace();
             // Return null or a specific error message depending on your error handling strategy
-            return null;
+            return "";
         }
         return sb.toString();
     }

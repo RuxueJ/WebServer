@@ -2,23 +2,15 @@ package webserver667;
 
 import startup.configuration.MimeTypes;
 import startup.configuration.ServerConfiguration;
-import webserver667.logging.Logger;
-import webserver667.requests.HttpMethods;
-import webserver667.requests.HttpRequest;
-import webserver667.requests.RequestReader;
-import webserver667.responses.IResource;
-import webserver667.responses.Resource;
-import webserver667.responses.writers.ResponseWriter;
-import webserver667.responses.writers.ResponseWriterFactory;
+import webserver667.core.ServerListener;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.nio.file.Path;
 
 public class WebServer implements I667Server {
 
     private int port;
+    private ServerListener serverListener;
 
     public WebServer() {
         super();
@@ -30,48 +22,33 @@ public class WebServer implements I667Server {
 
     @Override
     public void close() throws Exception {
+        if (serverListener != null) {
+            serverListener.close();
+        }
     }
 
     @Override
     public void start(ServerConfiguration configuration, MimeTypes mimeTypes) {
-        ServerSocket serverSocket = null;
+        System.out.println("Server Starting...");
+        int port = configuration.getPort();
+        Path documentRoot = configuration.getDocumentRoot();
+        System.out.println("Using port: " + port);
+        System.out.println("Using document root: " + documentRoot);
+
+        ServerListener serverListener = null;
         try {
-            serverSocket = new ServerSocket(configuration.getPort());
-            Path documentRoot = configuration.getDocumentRoot();
-//            while (true) {
-                Socket socket = null;
-                try {
-                    socket = serverSocket.accept();
-                    RequestReader requestReader = new RequestReader(socket.getInputStream());
-                    HttpRequest request = requestReader.getRequest();
-                    IResource resource = new Resource(request.getUri(), request.getQueryString(), String.valueOf(documentRoot), mimeTypes);
-                    ResponseWriter responseWriter = ResponseWriterFactory.create(socket.getOutputStream(), resource, request);
-                    responseWriter.write();
-                    System.out.println(Logger.getLogString(socket.getInetAddress().getHostAddress(), request, resource, responseWriter.getResponseCode(), (int) resource.getFileSize()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (socket != null) {
-                        try {
-                            socket.close();
-                        } catch (IOException e) {
-                        }
-                    }
-                }
-//            }
+            serverListener = new ServerListener(port, documentRoot, mimeTypes);
+            serverListener.start();
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (serverSocket != null){
-                try {
-                    serverSocket.close();
-                } catch (IOException e) {
-                }
-            }
+            System.out.println("Fail to start server, error: " + e.getMessage());
         }
     }
 
   @Override
   public void stop() {
+      try {
+          this.close();
+      } catch (Exception e) {
+      }
   }
 }

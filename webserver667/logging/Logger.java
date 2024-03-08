@@ -17,13 +17,21 @@ public class Logger {
       IResource resource,
       int statusCode,
       int bytesSent) {
+      String method = null;
+      String uri = null;
+      String version = Constants.DEFAULT_HTTP_VERSION;
+      if (request != null) {
+          uri = request.getUri();
+          version = request.getVersion();
+          method = request.getHttpMethod().toString();
+      }
     return String.format(
             Constants.LOGGER_STRING,
             ipAddress,
             TimestampUtil.getCurrentTimeInCLFPattern(),
-            request.getHttpMethod().toString(),
-            request.getUri(),
-            request.getVersion(),
+            method,
+            uri,
+            version,
             statusCode,
             bytesSent
           );

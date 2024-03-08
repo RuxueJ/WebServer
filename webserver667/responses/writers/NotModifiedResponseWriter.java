@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import webserver667.constant.Constants;
+import webserver667.exceptions.responses.ServerErrorException;
 import webserver667.requests.HttpRequest;
 
 import webserver667.responses.HttpResponseCode;
@@ -19,7 +20,7 @@ public class NotModifiedResponseWriter extends ResponseWriter {
   }
 
   @Override
-  public void write() {
+  public void write() throws ServerErrorException, IOException{
 
     try {
       writePipeLine(
@@ -30,9 +31,8 @@ public class NotModifiedResponseWriter extends ResponseWriter {
               null
       );
 
-    } catch (IOException e) {
-      // Handle IOException if necessary
-      e.printStackTrace();
+    } catch (Exception e) {
+      throw new ServerErrorException(e);
     }
   }
 

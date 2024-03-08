@@ -2,12 +2,10 @@ package webserver667.responses.writers;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.platform.commons.util.CollectionUtils;
-import org.junit.platform.commons.util.StringUtils;
+import webserver667.utils.StringUtils;
 import webserver667.constant.Constants;
 import webserver667.exceptions.responses.ServerErrorException;
 import webserver667.requests.HttpRequest;
@@ -33,11 +31,19 @@ public abstract class ResponseWriter {
     return responseCode.getCode();
   }
 
+  public String getResponseReason() {
+    return responseCode.getReasonPhrase();
+  }
+
+  public void setResponseCode(HttpResponseCode code) {
+    this.responseCode = code;
+  }
+
   public void writePipeLine(
           HttpResponseCode httpResponseCode,
           String mimeType,
           long contentLength,
-          String body,
+          byte[] body,
           Map<String, String> otherHeaders
     ) throws IOException {
     // [OPTIONAL] 0. preparation if required
@@ -74,10 +80,8 @@ public abstract class ResponseWriter {
     writeHeaders(commonHeaders);
   }
 
-  protected void writeBody(String body) throws IOException{
-    if (StringUtils.isNotBlank(body)) {
-      out.write(body.getBytes());
-    }
+  protected void writeBody(byte[] body) throws IOException{
+    out.write(body);
   }
 
   protected void writeEmptyLine() throws IOException {

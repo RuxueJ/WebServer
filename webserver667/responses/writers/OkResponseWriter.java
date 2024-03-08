@@ -3,6 +3,7 @@ package webserver667.responses.writers;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import webserver667.exceptions.responses.ServerErrorException;
 import webserver667.requests.HttpMethods;
 import webserver667.requests.HttpRequest;
 
@@ -16,10 +17,10 @@ public class OkResponseWriter extends ResponseWriter {
   }
 
   @Override
-  public void write() {
+  public void write() throws ServerErrorException, IOException {
     try {
      long contentLength = resource.getFileSize();
-    String body = request.getHttpMethod() != HttpMethods.HEAD ? new String(resource.getFileBytes()) : null;
+    byte[] body = request.getHttpMethod() != HttpMethods.HEAD ? resource.getFileBytes() : null;
     writePipeLine(
             HttpResponseCode.OK,
             resource.getMimeType(),
@@ -27,8 +28,8 @@ public class OkResponseWriter extends ResponseWriter {
             body,
             null
     );
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (Exception e) {
+      throw new ServerErrorException(e);
     }
   }
 

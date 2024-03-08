@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import webserver667.constant.Constants;
+import webserver667.exceptions.responses.ServerErrorException;
 import webserver667.requests.HttpRequest;
 
 import webserver667.responses.HttpResponseCode;
@@ -18,21 +19,20 @@ public class CreatedResponseWriter extends ResponseWriter {
   }
 
   @Override
-  public void write() {
-    String body = Constants.BODY_CREATED;
+  public void write() throws ServerErrorException, IOException {
+    byte[] body = Constants.BODY_CREATED.getBytes();
     Map<String, String> otherHeaders = new HashMap<>();
     otherHeaders.put(Constants.HEADER_LOCATION, request.getUri());
     try {
       writePipeLine(
               HttpResponseCode.CREATED,
               Constants.MIMETYPE_TEXT_PLAIN,
-              body.length(),
+              body.length,
               body,
               otherHeaders
       );
-    } catch (IOException e) {
-      // Handle IOException if necessary
-      e.printStackTrace();
+    } catch (Exception e) {
+      throw new ServerErrorException(e);
     }
   }
 
