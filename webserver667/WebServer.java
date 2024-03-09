@@ -22,9 +22,6 @@ public class WebServer implements I667Server {
 
     @Override
     public void close() throws Exception {
-        if (serverListener != null) {
-            serverListener.close();
-        }
     }
 
     @Override
@@ -35,7 +32,6 @@ public class WebServer implements I667Server {
         System.out.println("Using port: " + port);
         System.out.println("Using document root: " + documentRoot);
 
-        ServerListener serverListener = null;
         try {
             serverListener = new ServerListener(port, documentRoot, mimeTypes);
             serverListener.start();
@@ -46,9 +42,5 @@ public class WebServer implements I667Server {
 
   @Override
   public void stop() {
-      try {
-          this.close();
-      } catch (Exception e) {
-      }
   }
 }
