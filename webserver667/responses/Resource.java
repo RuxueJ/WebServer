@@ -51,6 +51,7 @@ public class Resource implements IResource {
     String pathStr = toCheck.toString();
     boolean containScript = false;
 
+    // if the resource's path includes "scripts"
     for(String s : pathStr.split(System.getProperty("file.separator"))){
       if ("scripts".equals(s)) {
         containScript = true;
@@ -67,8 +68,10 @@ public class Resource implements IResource {
 
   @Override
   public String getMimeType() {
+    // get resource suffix/extension from URI
     String[] split = this.URI.split("\\.");
     String extension = split[split.length - 1];
+    // get mimetype according to the extension
     return this.mimeTypes != null
             && this.mimeTypes.getMimeTypeByExtension(extension) != null
             ? this.mimeTypes.getMimeTypeByExtension(extension)

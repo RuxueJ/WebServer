@@ -39,6 +39,7 @@ public abstract class ResponseWriter {
     this.responseCode = code;
   }
 
+  // use a pipeline to unify the processing
   public void writePipeLine(
           HttpResponseCode httpResponseCode,
           String mimeType,
@@ -81,7 +82,9 @@ public abstract class ResponseWriter {
   }
 
   protected void writeBody(byte[] body) throws IOException{
-    out.write(body);
+    if (body != null) {
+      out.write(body);
+    }
   }
 
   protected void writeEmptyLine() throws IOException {

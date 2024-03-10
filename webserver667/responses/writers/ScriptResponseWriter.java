@@ -21,6 +21,7 @@ public class ScriptResponseWriter extends ResponseWriter {
   public void write() throws ServerErrorException, IOException {
     InputStream inputStream = null;
     try {
+      // execute successfully
       inputStream = executeScript();
       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
       writeStatusLine(HttpResponseCode.OK);
@@ -31,10 +32,12 @@ public class ScriptResponseWriter extends ResponseWriter {
       }
     }
     catch (Exception e) {
+      // error when executing the scripts
       throw new ServerErrorException(e);
     }
   }
 
+  // set the environment and execute script
   private InputStream executeScript() throws IOException, InterruptedException {
     ProcessBuilder processBuilder = new ProcessBuilder(resource.getPath().toString());
     // HTTP headers and protocol and querystring added into the environment

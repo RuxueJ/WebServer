@@ -17,7 +17,7 @@ public class RequestReader {
 
     public HttpRequest getRequest() throws BadRequestException, MethodNotAllowedException {
         HttpRequest httpRequest = new HttpRequest();
-        // read method, identifier and version
+        // read and set method, identifier and version
         String line = readLine();
         validate(line);
         String[] methodIdentifierVersion = line.split(" ");
@@ -38,7 +38,8 @@ public class RequestReader {
         // read body
         int contentLength = httpRequest.getContentLength();
         try {
-            httpRequest.setBody(input.readNBytes(contentLength));
+            byte[] bytes = input.readNBytes(contentLength);
+            httpRequest.setBody(bytes);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -31,6 +31,7 @@ public class ServerListener extends Thread{
             while (serverSocket.isBound() && !serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
                 System.out.println(" * connection accepted: " + socket.getInetAddress());
+                // create and start a thread to process request
                 HttpConnectionWorkerThread httpConnectionWorkerThread = new HttpConnectionWorkerThread(socket, documentRoot, mimeTypes);
                 httpConnectionWorkerThread.start();
             }

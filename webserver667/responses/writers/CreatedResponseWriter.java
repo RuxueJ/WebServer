@@ -21,6 +21,7 @@ public class CreatedResponseWriter extends ResponseWriter {
   @Override
   public void write() throws ServerErrorException, IOException {
     byte[] body = Constants.BODY_CREATED.getBytes();
+    // write other headers to response
     Map<String, String> otherHeaders = new HashMap<>();
     otherHeaders.put(Constants.HEADER_LOCATION, request.getUri());
     try {

@@ -22,6 +22,7 @@ public class WebServer implements I667Server {
 
     @Override
     public void close() throws Exception {
+        // no-op
     }
 
     @Override
@@ -33,6 +34,7 @@ public class WebServer implements I667Server {
         System.out.println("Using document root: " + documentRoot);
 
         try {
+            // start the listener to listen specific port
             serverListener = new ServerListener(port, documentRoot, mimeTypes);
             serverListener.start();
         } catch (IOException e) {
@@ -42,5 +44,6 @@ public class WebServer implements I667Server {
 
   @Override
   public void stop() {
+        // no-op
   }
 }

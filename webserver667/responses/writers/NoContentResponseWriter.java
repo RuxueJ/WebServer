@@ -35,6 +35,7 @@ public class NoContentResponseWriter extends ResponseWriter {
     }
   }
 
+  // NoContent response doesn't have the 3 common headers
   @Override
   protected void writeCommonHeaders(String mimeType, long contentLength) throws IOException {
     Map<String, String> commonHeaders = new HashMap<>();

@@ -21,3 +21,15 @@ REPLACE THIS TEXT: Describe challenges you encountered completing this assignmen
 ### System Design (Extra Credit - 5 pts)
 
 REPLACE THIS TEXT: Tell me about the design of your system. What classes did you create, and why? How do they interact? How are they organized? (A class diagram is expected to be included; you may include separate class diagrams for each package to keep the diagram readable.)
+
+Based on the original design, I added some Processors to process different HTTP methods. The `ProcessorFactory` will return a specific `Processor` by the HTTP method. The processors extend an abstract class `Processor`. Processors need to override `process()` method, which will return a specific `ResponseWriter` object according to the input.
+
+<img src="image/processor.png" style="zoom:100%;" />
+
+Apart from that, I also created a core package including a `ServerListener` class and a `HttpConnectionWorkerThread` class. They both extend `Thread` class and they are created to process the multiple requests at the same time.
+
+<img src="image/core.png" style="zoom:50%;" />
+
+The interact is shown in the sequence figure below
+
+![whiteboard_exported_image](image/interact.png)
