@@ -34,3 +34,9 @@ Apart from that, I also created a core package including a `ServerListener` clas
 The interact is shown in the sequence figure below
 
 ![whiteboard_exported_image](image/interact.png)
+
+
+### How to run
+1. javac -d target startup/ServerStartip.java
+2. java -cp target startup.ServerStartup -p 9867 -r public_html
+3. open the browser localhost:9867/index.html
